@@ -26,10 +26,11 @@ import org.apache.shenyu.common.enums.PluginEnum;
 import org.apache.shenyu.common.enums.RpcTypeEnum;
 import org.apache.shenyu.plugin.api.ShenyuPluginChain;
 import org.apache.shenyu.plugin.api.context.ShenyuContext;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
-import org.apache.shenyu.plugin.base.AbstractShenyuPlugin;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
+import org.apache.shenyu.plugin.base.AbstractShenyuPlugin;
 import org.apache.shenyu.plugin.sofa.proxy.SofaProxyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,13 +67,13 @@ public class SofaPlugin extends AbstractShenyuPlugin {
         if (!checkMetaData(metaData)) {
             assert metaData != null;
             LOG.error(" path is :{}, meta data have error.... {}", shenyuContext.getPath(), metaData);
-            exchange.getResponse().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-            Object error = ShenyuResultWrap.error(ShenyuResultEnum.META_DATA_ERROR.getCode(), ShenyuResultEnum.META_DATA_ERROR.getMsg(), null);
+            ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.META_DATA_ERROR, null);
+            exchange.getResponse().setStatusCode(error.getHttpStatus());
             return WebFluxResultUtils.result(exchange, error);
         }
         if (StringUtils.isNoneBlank(metaData.getParameterTypes()) && StringUtils.isBlank(param)) {
-            exchange.getResponse().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-            Object error = ShenyuResultWrap.error(ShenyuResultEnum.SOFA_HAVE_BODY_PARAM.getCode(), ShenyuResultEnum.SOFA_HAVE_BODY_PARAM.getMsg(), null);
+            ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.SOFA_HAVE_BODY_PARAM, null);
+            exchange.getResponse().setStatusCode(error.getHttpStatus());
             return WebFluxResultUtils.result(exchange, error);
         }
         final Mono<Object> result = sofaProxyService.genericInvoker(param, metaData, exchange);

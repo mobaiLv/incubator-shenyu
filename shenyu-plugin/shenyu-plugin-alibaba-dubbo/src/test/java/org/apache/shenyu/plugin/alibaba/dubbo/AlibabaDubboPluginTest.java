@@ -130,8 +130,8 @@ public final class AlibabaDubboPluginTest {
         SelectorData selectorData = mock(SelectorData.class);
 
         try (MockedStatic<ShenyuResultWrap> shenyuResultWrapMockedStatic = mockStatic(ShenyuResultWrap.class)) {
-            shenyuResultWrapMockedStatic.when(() -> ShenyuResultWrap
-                    .error(ShenyuResultEnum.DUBBO_HAVE_BODY_PARAM.getCode(), ShenyuResultEnum.DUBBO_HAVE_BODY_PARAM.getMsg(), null))
+            shenyuResultWrapMockedStatic.when(() ->
+                            ShenyuResultWrap.error(ShenyuResultEnum.DUBBO_HAVE_BODY_PARAM, null))
                     .thenReturn(new Object());
 
             Mono<Void> voidMono = alibabaDubboPluginUnderTest.doExecute(exchange, chain, selectorData, data);

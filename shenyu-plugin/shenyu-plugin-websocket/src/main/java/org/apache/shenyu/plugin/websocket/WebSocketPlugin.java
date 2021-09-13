@@ -30,6 +30,7 @@ import org.apache.shenyu.loadbalancer.entity.Upstream;
 import org.apache.shenyu.loadbalancer.factory.LoadBalancerFactory;
 import org.apache.shenyu.plugin.api.ShenyuPluginChain;
 import org.apache.shenyu.plugin.api.context.ShenyuContext;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
@@ -92,7 +93,7 @@ public class WebSocketPlugin extends AbstractShenyuPlugin {
         Upstream upstream = LoadBalancerFactory.selector(upstreamList, ruleHandle.getLoadBalance(), ip);
         if (Objects.isNull(upstream)) {
             LOG.error("websocket has no upstream");
-            Object error = ShenyuResultWrap.error(ShenyuResultEnum.CANNOT_FIND_URL.getCode(), ShenyuResultEnum.CANNOT_FIND_URL.getMsg(), null);
+            ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.CANNOT_FIND_URL, null);
             return WebFluxResultUtils.result(exchange, error);
         }
         URI wsRequestUrl = UriComponentsBuilder.fromUri(URI.create(buildWsRealPath(upstream, shenyuContext))).build().toUri();

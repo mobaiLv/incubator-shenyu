@@ -35,6 +35,7 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.Serializable;
 import java.util.Collections;
 
 import static org.mockito.Mockito.mock;
@@ -44,7 +45,7 @@ import static org.mockito.Mockito.when;
  * Test cases for WebSocketParamFilter.
  */
 @RunWith(MockitoJUnitRunner.class)
-public final class WebSocketParamFilterTest<T> extends WebSocketParamFilter {
+public final class WebSocketParamFilterTest<T extends Serializable> extends WebSocketParamFilter {
 
     private static final String UPGRADE = "Upgrade";
 

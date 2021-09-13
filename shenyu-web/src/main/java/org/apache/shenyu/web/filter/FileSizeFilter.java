@@ -17,6 +17,7 @@
 
 package org.apache.shenyu.web.filter;
 
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
@@ -24,13 +25,11 @@ import org.apache.shenyu.plugin.base.support.BodyInserterContext;
 import org.apache.shenyu.plugin.base.support.CachedBodyOutputMessage;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.http.codec.HttpMessageReader;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -70,9 +69,7 @@ public class FileSizeFilter implements WebFilter {
             return serverRequest.bodyToMono(DataBuffer.class)
                     .flatMap(size -> {
                         if (size.capacity() > BYTES_PER_MB * fileMaxSize) {
-                            ServerHttpResponse response = exchange.getResponse();
-                            response.setStatusCode(HttpStatus.BAD_REQUEST);
-                            Object error = ShenyuResultWrap.error(ShenyuResultEnum.PAYLOAD_TOO_LARGE.getCode(), ShenyuResultEnum.PAYLOAD_TOO_LARGE.getMsg(), null);
+                            ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.PAYLOAD_TOO_LARGE, null);
                             return WebFluxResultUtils.result(exchange, error);
                         }
                         BodyInserter<Mono<DataBuffer>, ReactiveHttpOutputMessage> bodyInsert = BodyInserters.fromPublisher(Mono.just(size), DataBuffer.class);

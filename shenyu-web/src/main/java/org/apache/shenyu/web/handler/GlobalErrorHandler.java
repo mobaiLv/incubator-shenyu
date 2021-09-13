@@ -19,6 +19,7 @@ package org.apache.shenyu.web.handler;
 
 import org.apache.shenyu.common.utils.GsonUtils;
 import org.apache.shenyu.common.utils.ThreadShare;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,8 +92,8 @@ public class GlobalErrorHandler extends DefaultErrorWebExceptionHandler {
             httpStatus = ((ResponseStatusException) ex).getStatus();
         }
         HTTP_STATUS_HOLDER.set(httpStatus.value());
-        Object error = ShenyuResultWrap.error(httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage());
-        return GsonUtils.getInstance().toObjectMap(GsonUtils.getInstance().toJson(error));
+        ShenyuResultData error = ShenyuResultWrap.error(httpStatus, httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage());
+        return GsonUtils.getInstance().toObjectMap(GsonUtils.getInstance().toJson(error.getData()));
     }
 
     private void logError(final ServerRequest request) {

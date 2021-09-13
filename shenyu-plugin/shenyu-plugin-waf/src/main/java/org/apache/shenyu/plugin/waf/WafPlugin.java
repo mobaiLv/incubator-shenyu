@@ -25,12 +25,14 @@ import org.apache.shenyu.common.dto.convert.WafHandle;
 import org.apache.shenyu.common.enums.PluginEnum;
 import org.apache.shenyu.common.enums.WafEnum;
 import org.apache.shenyu.common.enums.WafModelEnum;
+import org.apache.shenyu.common.utils.Singleton;
 import org.apache.shenyu.plugin.api.ShenyuPluginChain;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
+import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
 import org.apache.shenyu.plugin.base.AbstractShenyuPlugin;
 import org.apache.shenyu.plugin.base.utils.CacheKeyUtils;
-import org.apache.shenyu.common.utils.Singleton;
 import org.apache.shenyu.plugin.waf.config.WafConfig;
 import org.apache.shenyu.plugin.waf.handler.WafPluginDataHandler;
 import org.slf4j.Logger;
@@ -55,8 +57,8 @@ public class WafPlugin extends AbstractShenyuPlugin {
             if (WafModelEnum.BLACK.getName().equals(wafConfig.getModel())) {
                 return chain.execute(exchange);
             }
-            exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
-            Object error = ShenyuResultWrap.error(HttpStatus.FORBIDDEN.value(), Constants.REJECT_MSG, null);
+            ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.FORBIDDEN, null);
+            exchange.getResponse().setStatusCode(error.getHttpStatus());
             return WebFluxResultUtils.result(exchange, error);
         }
         String handle = rule.getHandle();
@@ -66,8 +68,8 @@ public class WafPlugin extends AbstractShenyuPlugin {
             return chain.execute(exchange);
         }
         if (WafEnum.REJECT.getName().equals(wafHandle.getPermission())) {
-            exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
-            Object error = ShenyuResultWrap.error(Integer.parseInt(wafHandle.getStatusCode()), Constants.REJECT_MSG, null);
+            ShenyuResultData error = ShenyuResultWrap.error(HttpStatus.FORBIDDEN, Integer.parseInt(wafHandle.getStatusCode()), Constants.REJECT_MSG, null);
+            exchange.getResponse().setStatusCode(error.getHttpStatus());
             return WebFluxResultUtils.result(exchange, error);
         }
         return chain.execute(exchange);

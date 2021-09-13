@@ -20,13 +20,12 @@ package org.apache.shenyu.web.filter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shenyu.common.constant.Constants;
 import org.apache.shenyu.common.enums.RpcTypeEnum;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilterChain;
@@ -52,9 +51,7 @@ public class WebSocketParamFilter extends AbstractWebFilter {
 
     @Override
     protected Mono<Void> doDenyResponse(final ServerWebExchange exchange) {
-        ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-        Object error = ShenyuResultWrap.error(ShenyuResultEnum.PARAM_ERROR.getCode(), ShenyuResultEnum.PARAM_ERROR.getMsg(), null);
+        ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.PARAM_ERROR, null);
         return WebFluxResultUtils.result(exchange, error);
     }
 

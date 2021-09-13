@@ -18,33 +18,50 @@
 package org.apache.shenyu.plugin.api.result;
 
 import org.apache.shenyu.plugin.api.utils.SpringBeanUtils;
+import org.springframework.http.HttpStatus;
+
+import java.io.Serializable;
 
 /**
  * The type shenyu result warp.
  */
 public final class ShenyuResultWrap<T> {
-    
+
     /**
      * Success object.
      *
-     * @param code    the code
-     * @param message the message
+     * @param resultEnum  the result enum
      * @param object  the object
      * @return the object
      */
-    public static Object success(final int code, final String message, final Object object) {
-        return SpringBeanUtils.getInstance().getBean(ShenyuResult.class).success(code, message, object);
+    public static ShenyuResultData success(final ShenyuResultEnum resultEnum, final Serializable object) {
+        final Serializable data = SpringBeanUtils.getInstance().getBean(ShenyuResult.class).success(resultEnum, object);
+        return ShenyuResultData.result(resultEnum.getHttpStatus(), data);
     }
 
     /**
      * Error object.
      *
+     * @param resultEnum  the result enum
+     * @param object  the object
+     * @return the object
+     */
+    public static ShenyuResultData error(final ShenyuResultEnum resultEnum, final Serializable object) {
+        final Serializable data = SpringBeanUtils.getInstance().getBean(ShenyuResult.class).error(resultEnum, object);
+        return ShenyuResultData.result(resultEnum.getHttpStatus(), data);
+    }
+
+    /**
+     * Error object.
+     *
+     * @param httpStatus the status
      * @param code    the code
      * @param message the message
      * @param object  the object
      * @return the object
      */
-    public static Object error(final int code, final String message, final Object object) {
-        return SpringBeanUtils.getInstance().getBean(ShenyuResult.class).error(code, message, object);
+    public static ShenyuResultData error(final HttpStatus httpStatus, final int code, final String message, final Serializable object) {
+        final Serializable data = SpringBeanUtils.getInstance().getBean(ShenyuResult.class).error(code, message, object);
+        return ShenyuResultData.result(httpStatus, data);
     }
 }

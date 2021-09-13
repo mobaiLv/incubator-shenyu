@@ -25,6 +25,7 @@ import org.apache.shenyu.common.enums.RpcTypeEnum;
 import org.apache.shenyu.plugin.api.ShenyuPlugin;
 import org.apache.shenyu.plugin.api.ShenyuPluginChain;
 import org.apache.shenyu.plugin.api.context.ShenyuContext;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
@@ -78,7 +79,7 @@ public class NettyHttpClientPlugin implements ShenyuPlugin {
         filtered.forEach(httpHeaders::set);
         String url = exchange.getAttribute(Constants.HTTP_URL);
         if (StringUtils.isEmpty(url)) {
-            Object error = ShenyuResultWrap.error(ShenyuResultEnum.CANNOT_FIND_URL.getCode(), ShenyuResultEnum.CANNOT_FIND_URL.getMsg(), null);
+            ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.CANNOT_FIND_URL, null);
             return WebFluxResultUtils.result(exchange, error);
         }
         LOG.info("you request, The resulting urlPath is: {}", url);

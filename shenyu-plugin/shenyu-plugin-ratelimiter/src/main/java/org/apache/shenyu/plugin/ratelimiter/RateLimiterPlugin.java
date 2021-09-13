@@ -22,6 +22,7 @@ import org.apache.shenyu.common.dto.SelectorData;
 import org.apache.shenyu.common.dto.convert.RateLimiterHandle;
 import org.apache.shenyu.common.enums.PluginEnum;
 import org.apache.shenyu.plugin.api.ShenyuPluginChain;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
@@ -30,7 +31,6 @@ import org.apache.shenyu.plugin.base.utils.CacheKeyUtils;
 import org.apache.shenyu.plugin.ratelimiter.executor.RedisRateLimiter;
 import org.apache.shenyu.plugin.ratelimiter.handler.RateLimiterPluginDataHandler;
 import org.apache.shenyu.plugin.ratelimiter.resolver.RateLimiterKeyResolverFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -72,8 +72,8 @@ public class RateLimiterPlugin extends AbstractShenyuPlugin {
         return redisRateLimiter.isAllowed(rule.getId() + resolverKey, limiterHandle)
                 .flatMap(response -> {
                     if (!response.isAllowed()) {
-                        exchange.getResponse().setStatusCode(HttpStatus.TOO_MANY_REQUESTS);
-                        Object error = ShenyuResultWrap.error(ShenyuResultEnum.TOO_MANY_REQUESTS.getCode(), ShenyuResultEnum.TOO_MANY_REQUESTS.getMsg(), null);
+                        ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.TOO_MANY_REQUESTS, null);
+                        exchange.getResponse().setStatusCode(error.getHttpStatus());
                         return WebFluxResultUtils.result(exchange, error);
                     }
                     return chain.execute(exchange);

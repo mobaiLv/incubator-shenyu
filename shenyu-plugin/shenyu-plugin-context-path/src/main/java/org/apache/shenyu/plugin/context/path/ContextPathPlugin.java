@@ -26,6 +26,7 @@ import org.apache.shenyu.common.enums.PluginEnum;
 import org.apache.shenyu.common.enums.RpcTypeEnum;
 import org.apache.shenyu.plugin.api.ShenyuPluginChain;
 import org.apache.shenyu.plugin.api.context.ShenyuContext;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
@@ -34,6 +35,7 @@ import org.apache.shenyu.plugin.base.utils.CacheKeyUtils;
 import org.apache.shenyu.plugin.context.path.handler.ContextPathPluginDataHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -58,7 +60,8 @@ public class ContextPathPlugin extends AbstractShenyuPlugin {
         if (StringUtils.isNoneBlank(contextMappingHandle.getContextPath())) {
             if (!shenyuContext.getPath().startsWith(contextMappingHandle.getContextPath())) {
                 LOG.error("the context path '{}' is invalid.", contextMappingHandle.getContextPath());
-                Object error = ShenyuResultWrap.error(ShenyuResultEnum.CONTEXT_PATH_ERROR.getCode(),
+                ShenyuResultData error = ShenyuResultWrap.error(HttpStatus.INTERNAL_SERVER_ERROR,
+                        ShenyuResultEnum.CONTEXT_PATH_ERROR.getCode(),
                         String.format("%s [invalid context path:'%s']",
                                 ShenyuResultEnum.CONTEXT_PATH_ERROR.getMsg(),
                                 contextMappingHandle.getContextPath()), null);

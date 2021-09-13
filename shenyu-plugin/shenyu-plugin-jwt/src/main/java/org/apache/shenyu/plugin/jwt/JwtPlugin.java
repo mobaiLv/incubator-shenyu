@@ -24,13 +24,14 @@ import org.apache.shenyu.common.dto.RuleData;
 import org.apache.shenyu.common.dto.SelectorData;
 import org.apache.shenyu.common.enums.PluginEnum;
 import org.apache.shenyu.common.utils.CollectionUtils;
+import org.apache.shenyu.common.utils.Singleton;
 import org.apache.shenyu.plugin.api.ShenyuPluginChain;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
-import org.apache.shenyu.common.utils.Singleton;
-import org.apache.shenyu.plugin.jwt.config.JwtConfig;
 import org.apache.shenyu.plugin.base.AbstractShenyuPlugin;
+import org.apache.shenyu.plugin.jwt.config.JwtConfig;
 import org.apache.shenyu.plugin.jwt.exception.ThrowingFunction;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.server.ServerWebExchange;
@@ -63,7 +64,8 @@ public class JwtPlugin extends AbstractShenyuPlugin {
         }
         // check secreteKey
         if (StringUtils.isEmpty(jwtConfig.getSecretKey())) {
-            Object error = ShenyuResultWrap.error(ShenyuResultEnum.SECRET_KEY_MUST_BE_CONFIGURED.getCode(), ShenyuResultEnum.SECRET_KEY_MUST_BE_CONFIGURED.getMsg(), null);
+            ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.SECRET_KEY_MUST_BE_CONFIGURED, null);
+            exchange.getResponse().setStatusCode(error.getHttpStatus());
             return WebFluxResultUtils.result(exchange, error);
         }
         // compatible processing
@@ -97,8 +99,9 @@ public class JwtPlugin extends AbstractShenyuPlugin {
                                           final ShenyuPluginChain chain,
                                           final String authorization,
                                           final String secretKey) {
-        Object error = ShenyuResultWrap.error(ShenyuResultEnum.ERROR_TOKEN.getCode(), ShenyuResultEnum.ERROR_TOKEN.getMsg(), null);
+        ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.ERROR_TOKEN, null);
         if (StringUtils.isEmpty(authorization)) {
+            exchange.getResponse().setStatusCode(error.getHttpStatus());
             return WebFluxResultUtils.result(exchange, error);
         }
         JwtParser jwtParser = Jwts.parser();

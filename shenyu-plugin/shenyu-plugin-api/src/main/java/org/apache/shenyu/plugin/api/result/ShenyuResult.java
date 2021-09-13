@@ -17,20 +17,30 @@
 
 package org.apache.shenyu.plugin.api.result;
 
+import java.io.Serializable;
+
 /**
  * The interface shenyu result.
  */
-public interface ShenyuResult<T> {
+public interface ShenyuResult<T extends Serializable> {
 
     /**
      * Success t.
      *
-     * @param code    the code
-     * @param message the message
+     * @param resultEnum  the result enum
      * @param object  the object
      * @return the t
      */
-    T success(int code, String message, Object object);
+    T success(ShenyuResultEnum resultEnum, Serializable object);
+
+    /**
+     * Error t.
+     *
+     * @param resultEnum  the result enum
+     * @param object  the object
+     * @return the t
+     */
+    T error(ShenyuResultEnum resultEnum, Serializable object);
 
     /**
      * Error t.
@@ -40,6 +50,5 @@ public interface ShenyuResult<T> {
      * @param object  the object
      * @return the t
      */
-    T error(int code, String message, Object object);
-
+    T error(int code, String message, Serializable object);
 }

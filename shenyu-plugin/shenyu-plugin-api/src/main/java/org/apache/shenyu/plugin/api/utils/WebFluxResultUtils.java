@@ -18,6 +18,7 @@
 package org.apache.shenyu.plugin.api.utils;
 
 import org.apache.shenyu.common.utils.JsonUtils;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.slf4j.Logger;
@@ -42,11 +43,12 @@ public final class WebFluxResultUtils {
      * @param result    the result
      * @return the mono
      */
-    public static Mono<Void> result(final ServerWebExchange exchange, final Object result) {
+    public static Mono<Void> result(final ServerWebExchange exchange, final ShenyuResultData result) {
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+        exchange.getResponse().setStatusCode(result.getHttpStatus());
         return exchange.getResponse().writeWith(Mono.just(exchange.getResponse()
                 // TODO this is a risk for error charset coding with getBytes
-                .bufferFactory().wrap(Objects.requireNonNull(JsonUtils.toJson(result)).getBytes())));
+                .bufferFactory().wrap(Objects.requireNonNull(JsonUtils.toJson(result.getData())).getBytes())));
     }
 
     /**
@@ -58,7 +60,7 @@ public final class WebFluxResultUtils {
      */
     public static Mono<Void> noSelectorResult(final String pluginName, final ServerWebExchange exchange) {
         LOG.error("can not match selector data: {}", pluginName);
-        Object error = ShenyuResultWrap.error(ShenyuResultEnum.SELECTOR_NOT_FOUND.getCode(), ShenyuResultEnum.SELECTOR_NOT_FOUND.getMsg(), null);
+        ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.SELECTOR_NOT_FOUND, null);
         return WebFluxResultUtils.result(exchange, error);
     }
 
@@ -71,7 +73,7 @@ public final class WebFluxResultUtils {
      */
     public static Mono<Void> noRuleResult(final String pluginName, final ServerWebExchange exchange) {
         LOG.error("can not match rule data: {}", pluginName);
-        Object error = ShenyuResultWrap.error(ShenyuResultEnum.RULE_NOT_FOUND.getCode(), ShenyuResultEnum.RULE_NOT_FOUND.getMsg(), null);
+        ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.RULE_NOT_FOUND, null);
         return WebFluxResultUtils.result(exchange, error);
     }
 }

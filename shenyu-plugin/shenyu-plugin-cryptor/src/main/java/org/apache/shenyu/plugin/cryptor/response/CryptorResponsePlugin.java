@@ -25,6 +25,7 @@ import org.apache.shenyu.common.dto.SelectorData;
 import org.apache.shenyu.common.dto.convert.rule.impl.CryptorResponseRuleHandle;
 import org.apache.shenyu.common.enums.PluginEnum;
 import org.apache.shenyu.plugin.api.ShenyuPluginChain;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
@@ -68,7 +69,9 @@ public class CryptorResponsePlugin extends AbstractShenyuPlugin {
             return chain.execute(exchange);
         }
         if (JsonUtil.checkParam(ruleHandle.toJson())) {
-            Object error = ShenyuResultWrap.error(ShenyuResultEnum.CRYPTOR_RESPONSE_ERROR_CONFIGURATION.getCode(),
+            ShenyuResultData error = ShenyuResultWrap.error(
+                    ShenyuResultEnum.CRYPTOR_RESPONSE_ERROR_CONFIGURATION.getHttpStatus(),
+                    ShenyuResultEnum.CRYPTOR_RESPONSE_ERROR_CONFIGURATION.getCode(),
                     ShenyuResultEnum.CRYPTOR_RESPONSE_ERROR_CONFIGURATION.getMsg() + "[" + JsonUtil.getErrorCollector() + "]", null);
             return WebFluxResultUtils.result(exchange, error);
         }

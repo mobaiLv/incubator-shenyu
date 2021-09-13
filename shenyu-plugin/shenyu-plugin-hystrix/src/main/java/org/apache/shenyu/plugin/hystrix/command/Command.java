@@ -18,20 +18,20 @@
 package org.apache.shenyu.plugin.hystrix.command;
 
 import com.netflix.hystrix.exception.HystrixRuntimeException;
-
 import com.netflix.hystrix.exception.HystrixTimeoutException;
-import java.net.URI;
-import java.util.Objects;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.SpringBeanUtils;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.reactive.DispatcherHandler;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import rx.Observable;
+
+import java.net.URI;
+import java.util.Objects;
 
 /**
  * hystrix command for semaphore and thread.
@@ -59,24 +59,21 @@ public interface Command {
      * @param exception exception instance
      * @return error which be wrapped by {@link ShenyuResultWrap}
      */
-    default Object generateError(ServerWebExchange exchange, Throwable exception) {
-        Object error;
+    default ShenyuResultData generateError(ServerWebExchange exchange, Throwable exception) {
+        ShenyuResultData error;
         if (exception instanceof HystrixRuntimeException) {
             HystrixRuntimeException e = (HystrixRuntimeException) exception;
             if (e.getFailureType() == HystrixRuntimeException.FailureType.TIMEOUT) {
-                exchange.getResponse().setStatusCode(HttpStatus.GATEWAY_TIMEOUT);
-                error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_TIMEOUT.getCode(), ShenyuResultEnum.SERVICE_TIMEOUT.getMsg(), null);
+                error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_TIMEOUT, null);
             } else {
-                exchange.getResponse().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-                error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR.getCode(), ShenyuResultEnum.SERVICE_RESULT_ERROR.getMsg(), null);
+                error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR, null);
             }
         } else if (exception instanceof HystrixTimeoutException) {
-            exchange.getResponse().setStatusCode(HttpStatus.GATEWAY_TIMEOUT);
-            error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_TIMEOUT.getCode(), ShenyuResultEnum.SERVICE_TIMEOUT.getMsg(), null);
+            error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_TIMEOUT, null);
         } else {
-            exchange.getResponse().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-            error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR.getCode(), ShenyuResultEnum.SERVICE_RESULT_ERROR.getMsg(), null);
+            error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR, null);
         }
+        exchange.getResponse().setStatusCode(error.getHttpStatus());
         return error;
     }
 
@@ -88,8 +85,7 @@ public interface Command {
      */
     default Mono<Void> doFallback(ServerWebExchange exchange, Throwable exception) {
         if (Objects.isNull(getCallBackUri())) {
-            Object error;
-            error = generateError(exchange, exception);
+            ShenyuResultData error = generateError(exchange, exception);
             return WebFluxResultUtils.result(exchange, error);
         }
         DispatcherHandler dispatcherHandler =

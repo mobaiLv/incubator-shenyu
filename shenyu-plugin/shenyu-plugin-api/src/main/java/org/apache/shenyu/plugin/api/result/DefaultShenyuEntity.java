@@ -34,7 +34,7 @@ public class DefaultShenyuEntity implements Serializable {
 
     private String message;
 
-    private Object data;
+    private Serializable data;
 
     /**
      * Instantiates a new shenyu result.
@@ -43,7 +43,7 @@ public class DefaultShenyuEntity implements Serializable {
      * @param message the message
      * @param data    the data
      */
-    public DefaultShenyuEntity(final Integer code, final String message, final Object data) {
+    public DefaultShenyuEntity(final Integer code, final String message, final Serializable data) {
         this.code = code;
         this.message = message;
         this.data = data;
@@ -99,7 +99,7 @@ public class DefaultShenyuEntity implements Serializable {
      *
      * @param data the data
      */
-    public void setData(final Object data) {
+    public void setData(final Serializable data) {
         this.data = data;
     }
 
@@ -128,7 +128,7 @@ public class DefaultShenyuEntity implements Serializable {
      * @param data this is result data.
      * @return {@linkplain DefaultShenyuEntity}
      */
-    public static DefaultShenyuEntity success(final Object data) {
+    public static DefaultShenyuEntity success(final Serializable data) {
         return success(null, data);
     }
 
@@ -139,7 +139,7 @@ public class DefaultShenyuEntity implements Serializable {
      * @param data this is result data.
      * @return {@linkplain DefaultShenyuEntity}
      */
-    public static DefaultShenyuEntity success(final String msg, final Object data) {
+    public static DefaultShenyuEntity success(final String msg, final Serializable data) {
         return get(SUCCESSFUL, msg, data);
     }
 
@@ -151,7 +151,7 @@ public class DefaultShenyuEntity implements Serializable {
      * @param data the data
      * @return the shenyu web result
      */
-    public static DefaultShenyuEntity success(final int code, final String msg, final Object data) {
+    public static DefaultShenyuEntity success(final int code, final String msg, final Serializable data) {
         return get(code, msg, data);
     }
 
@@ -184,7 +184,7 @@ public class DefaultShenyuEntity implements Serializable {
      * @param data the data
      * @return {@linkplain DefaultShenyuEntity}
      */
-    public static DefaultShenyuEntity error(final int code, final String msg, final Object data) {
+    public static DefaultShenyuEntity error(final int code, final String msg, final Serializable data) {
         return get(code, msg, data);
     }
 
@@ -198,7 +198,7 @@ public class DefaultShenyuEntity implements Serializable {
         return error(ERROR, msg);
     }
 
-    private static DefaultShenyuEntity get(final int code, final String msg, final Object data) {
+    private static DefaultShenyuEntity get(final int code, final String msg, final Serializable data) {
         return new DefaultShenyuEntity(code, msg, data);
     }
 }

@@ -20,6 +20,7 @@ package org.apache.shenyu.plugin.response.strategy;
 import org.apache.shenyu.common.constant.Constants;
 import org.apache.shenyu.common.utils.JsonUtils;
 import org.apache.shenyu.plugin.api.ShenyuPluginChain;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
@@ -37,12 +38,14 @@ public class RPCMessageWriter implements MessageWriter {
     public Mono<Void> writeWith(final ServerWebExchange exchange, final ShenyuPluginChain chain) {
         return chain.execute(exchange).then(Mono.defer(() -> {
             Object result = exchange.getAttribute(Constants.RPC_RESULT);
+            ShenyuResultData data;
             if (Objects.isNull(result)) {
-                Object error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR.getCode(), ShenyuResultEnum.SERVICE_RESULT_ERROR.getMsg(), null);
-                return WebFluxResultUtils.result(exchange, error);
+                data = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR, null);
+            } else {
+                data = ShenyuResultWrap.success(ShenyuResultEnum.SUCCESS, JsonUtils.removeClass(result));
             }
-            Object success = ShenyuResultWrap.success(ShenyuResultEnum.SUCCESS.getCode(), ShenyuResultEnum.SUCCESS.getMsg(), JsonUtils.removeClass(result));
-            return WebFluxResultUtils.result(exchange, success);
+            exchange.getResponse().setStatusCode(data.getHttpStatus());
+            return WebFluxResultUtils.result(exchange, data);
         }));
     }
 }

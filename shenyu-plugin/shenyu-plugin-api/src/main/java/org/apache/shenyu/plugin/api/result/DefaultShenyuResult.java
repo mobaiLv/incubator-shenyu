@@ -17,18 +17,25 @@
 
 package org.apache.shenyu.plugin.api.result;
 
+import java.io.Serializable;
+
 /**
  * The type Shenyu default result.
  */
 public class DefaultShenyuResult implements ShenyuResult<DefaultShenyuEntity> {
 
     @Override
-    public DefaultShenyuEntity success(final int code, final String message, final Object object) {
-        return DefaultShenyuEntity.success(code, message, object);
+    public DefaultShenyuEntity success(final ShenyuResultEnum resultEnum, final Serializable object) {
+        return DefaultShenyuEntity.success(resultEnum.getCode(), resultEnum.getMsg(), object);
     }
 
     @Override
-    public DefaultShenyuEntity error(final int code, final String message, final Object object) {
+    public DefaultShenyuEntity error(final ShenyuResultEnum resultEnum, final Serializable object) {
+        return DefaultShenyuEntity.error(resultEnum.getCode(), resultEnum.getMsg(), object);
+    }
+
+    @Override
+    public DefaultShenyuEntity error(final int code, final String message, final Serializable object) {
         return DefaultShenyuEntity.error(code, message, object);
     }
 }

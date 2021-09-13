@@ -19,6 +19,7 @@ package org.apache.shenyu.plugin.response.strategy;
 
 import org.apache.shenyu.common.constant.Constants;
 import org.apache.shenyu.plugin.api.ShenyuPluginChain;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
@@ -44,11 +45,11 @@ public class WebClientMessageWriter implements MessageWriter {
             if (Objects.isNull(clientResponse)
                     || response.getStatusCode() == HttpStatus.BAD_GATEWAY
                     || response.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
-                Object error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR.getCode(), ShenyuResultEnum.SERVICE_RESULT_ERROR.getMsg(), null);
+                ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR, null);
                 return WebFluxResultUtils.result(exchange, error);
             }
             if (response.getStatusCode() == HttpStatus.GATEWAY_TIMEOUT) {
-                Object error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_TIMEOUT.getCode(), ShenyuResultEnum.SERVICE_TIMEOUT.getMsg(), null);
+                ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_TIMEOUT, null);
                 return WebFluxResultUtils.result(exchange, error);
             }
             response.getCookies().putAll(clientResponse.cookies());

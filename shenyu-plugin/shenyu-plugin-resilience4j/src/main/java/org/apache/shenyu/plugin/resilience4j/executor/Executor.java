@@ -20,6 +20,7 @@ package org.apache.shenyu.plugin.resilience4j.executor;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.SpringBeanUtils;
@@ -27,7 +28,6 @@ import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
 import org.apache.shenyu.plugin.base.utils.UriUtils;
 import org.apache.shenyu.plugin.resilience4j.Resilience4JPlugin;
 import org.apache.shenyu.plugin.resilience4j.conf.Resilience4JConf;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.reactive.DispatcherHandler;
 import org.springframework.web.server.ServerWebExchange;
@@ -79,22 +79,19 @@ public interface Executor {
      * @return Mono
      */
     default Mono<Void> withoutFallback(ServerWebExchange exchange, Throwable throwable) {
-        Object error;
+        ShenyuResultData error;
         if (throwable instanceof TimeoutException) {
-            exchange.getResponse().setStatusCode(HttpStatus.GATEWAY_TIMEOUT);
-            error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_TIMEOUT.getCode(), ShenyuResultEnum.SERVICE_TIMEOUT.getMsg(), null);
+            error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_TIMEOUT, null);
         } else if (throwable instanceof Resilience4JPlugin.CircuitBreakerStatusCodeException) {
             return Mono.error(throwable);
         } else if (throwable instanceof CallNotPermittedException) {
-            exchange.getResponse().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-            error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR.getCode(), ShenyuResultEnum.SERVICE_RESULT_ERROR.getMsg(), null);
+            error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR, null);
         } else if (throwable instanceof RequestNotPermitted) {
-            exchange.getResponse().setStatusCode(HttpStatus.TOO_MANY_REQUESTS);
-            error = ShenyuResultWrap.error(ShenyuResultEnum.TOO_MANY_REQUESTS.getCode(), ShenyuResultEnum.TOO_MANY_REQUESTS.getMsg(), null);
+            error = ShenyuResultWrap.error(ShenyuResultEnum.TOO_MANY_REQUESTS, null);
         } else {
-            exchange.getResponse().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-            error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR.getCode(), ShenyuResultEnum.SERVICE_RESULT_ERROR.getMsg(), null);
+            error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR, null);
         }
+        exchange.getResponse().setStatusCode(error.getHttpStatus());
         return WebFluxResultUtils.result(exchange, error);
     }
 
@@ -105,8 +102,8 @@ public interface Executor {
      * @return Mono
      */
     default Mono<Void> error(ServerWebExchange exchange) {
-        exchange.getResponse().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-        Object error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR.getCode(), ShenyuResultEnum.SERVICE_RESULT_ERROR.getMsg(), null);
+        ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.SERVICE_RESULT_ERROR, null);
+        exchange.getResponse().setStatusCode(error.getHttpStatus());
         return WebFluxResultUtils.result(exchange, error);
     }
 }

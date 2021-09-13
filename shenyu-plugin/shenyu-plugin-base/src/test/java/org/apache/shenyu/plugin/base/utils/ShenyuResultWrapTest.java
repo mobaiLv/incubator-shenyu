@@ -20,6 +20,8 @@ package org.apache.shenyu.plugin.base.utils;
 import org.apache.shenyu.plugin.api.result.DefaultShenyuEntity;
 import org.apache.shenyu.plugin.api.result.DefaultShenyuResult;
 import org.apache.shenyu.plugin.api.result.ShenyuResult;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
+import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
 import org.apache.shenyu.plugin.api.utils.SpringBeanUtils;
 import org.junit.Assert;
@@ -50,10 +52,11 @@ public final class ShenyuResultWrapTest {
      */
     @Test
     public void successTest() {
-        Integer result = 0;
-        DefaultShenyuEntity shenyuResult = (DefaultShenyuEntity) ShenyuResultWrap.success(result, "success", new Object());
-        Assert.assertEquals(shenyuResult.getCode(), result);
-        Assert.assertEquals(shenyuResult.getMessage(), "success");
+        Integer result = ShenyuResultEnum.SUCCESS.getCode();
+        ShenyuResultData shenyuResultData = ShenyuResultWrap.success(ShenyuResultEnum.SUCCESS, null);
+        final DefaultShenyuEntity responseData = (DefaultShenyuEntity) shenyuResultData.getData();
+        Assert.assertEquals(responseData.getCode(), result);
+        Assert.assertEquals(responseData.getMessage(), ShenyuResultEnum.SUCCESS.getMsg());
     }
 
     /**
@@ -61,9 +64,10 @@ public final class ShenyuResultWrapTest {
      */
     @Test
     public void errorTest() {
-        Integer result = 1;
-        DefaultShenyuEntity shenyuResult = (DefaultShenyuEntity) ShenyuResultWrap.error(result, "error", new Object());
-        Assert.assertEquals(shenyuResult.getCode(), result);
-        Assert.assertEquals(shenyuResult.getMessage(), "error");
+        Integer result = ShenyuResultEnum.FAIL.getCode();
+        ShenyuResultData shenyuResultData = ShenyuResultWrap.error(ShenyuResultEnum.FAIL, null);
+        final DefaultShenyuEntity responseData = (DefaultShenyuEntity) shenyuResultData.getData();
+        Assert.assertEquals(responseData.getCode(), result);
+        Assert.assertEquals(responseData.getMessage(), ShenyuResultEnum.FAIL.getMsg());
     }
 }

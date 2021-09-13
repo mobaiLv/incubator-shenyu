@@ -21,12 +21,14 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.shenyu.common.dto.RuleData;
 import org.apache.shenyu.common.dto.SelectorData;
 import org.apache.shenyu.common.enums.PluginEnum;
+import org.apache.shenyu.plugin.api.ShenyuPluginChain;
+import org.apache.shenyu.plugin.api.result.ShenyuResultData;
 import org.apache.shenyu.plugin.api.result.ShenyuResultEnum;
 import org.apache.shenyu.plugin.api.result.ShenyuResultWrap;
-import org.apache.shenyu.plugin.api.ShenyuPluginChain;
-import org.apache.shenyu.plugin.base.AbstractShenyuPlugin;
 import org.apache.shenyu.plugin.api.utils.WebFluxResultUtils;
+import org.apache.shenyu.plugin.base.AbstractShenyuPlugin;
 import org.apache.shenyu.plugin.sign.api.SignService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -60,7 +62,8 @@ public class SignPlugin extends AbstractShenyuPlugin {
     protected Mono<Void> doExecute(final ServerWebExchange exchange, final ShenyuPluginChain chain, final SelectorData selector, final RuleData rule) {
         Pair<Boolean, String> result = signService.signVerify(exchange);
         if (!result.getLeft()) {
-            Object error = ShenyuResultWrap.error(ShenyuResultEnum.SIGN_IS_NOT_PASS.getCode(), result.getRight(), null);
+            ShenyuResultData error = ShenyuResultWrap.error(ShenyuResultEnum.SIGN_IS_NOT_PASS.getHttpStatus(), ShenyuResultEnum.SIGN_IS_NOT_PASS.getCode(), result.getRight(), null);
+            exchange.getResponse().setStatusCode(error.getHttpStatus());
             return WebFluxResultUtils.result(exchange, error);
         }
         return chain.execute(exchange);

@@ -41,6 +41,11 @@ public interface Constants {
      * The constant context path.
      */
     String CONTEXT_PATH = "contextPath";
+
+    /**
+     * The UPGRADE context path.
+     */
+    String UPGRADE = "Upgrade";
     
     /**
      * The constant META_DATA.
@@ -146,6 +151,11 @@ public interface Constants {
      * The constant RPC_TYPE.
      */
     String RPC_TYPE = "rpcType";
+
+    /**
+     * The constant RPC_TYPE_HEADER.
+     */
+    String RPC_TYPE_HEADER = "rpc_type";
     
     /**
      * The constant SIGN.

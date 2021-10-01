@@ -18,6 +18,7 @@
 package org.apache.shenyu.plugin.api.context;
 
 import org.apache.shenyu.common.dto.MetaData;
+import org.apache.shenyu.common.enums.RpcTypeEnum;
 
 /**
  * The interface shenyu context decorator.
@@ -39,6 +40,6 @@ public interface ShenyuContextDecorator {
      * @return the string
      */
     default String rpcType() {
-        return "http";
+        return RpcTypeEnum.HTTP.getName();
     }
 }

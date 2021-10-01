@@ -120,7 +120,7 @@ public class ZookeeperClientRegisterRepositoryTest {
     @Test
     public void testPersistInterface() {
         final MetaDataRegisterDTO data = MetaDataRegisterDTO.builder()
-                .rpcType("http")
+                .rpcType(RpcTypeEnum.HTTP.getName())
                 .host("host")
                 .port(80)
                 .contextPath("/context")
@@ -128,11 +128,11 @@ public class ZookeeperClientRegisterRepositoryTest {
                 .build();
 
         repository.persistInterface(data);
-        String metadataPath = "/shenyu/register/metadata/http/context/context-ruleName";
+        String metadataPath = "/shenyu/register/metadata/Http/context/context-ruleName";
         assert zookeeperBroker.containsKey(metadataPath);
         assert zookeeperBroker.get(metadataPath).equals(GsonUtils.getInstance().toJson(data));
 
-        String uriPath = "/shenyu/register/uri/http/context/host:80";
+        String uriPath = "/shenyu/register/uri/Http/context/host:80";
         assert zookeeperBroker.containsKey(uriPath);
         assert zookeeperBroker.get(uriPath).equals(GsonUtils.getInstance().toJson(URIRegisterDTO.transForm(data)));
 
@@ -159,11 +159,11 @@ public class ZookeeperClientRegisterRepositoryTest {
                 .build();
 
         repository.persistInterface(data);
-        String metadataPath = "/shenyu/register/metadata/grpc/context/testService.testMethod";
+        String metadataPath = "/shenyu/register/metadata/Grpc/context/testService.testMethod";
         assert zookeeperBroker.containsKey(metadataPath);
         assert zookeeperBroker.get(metadataPath).equals(GsonUtils.getInstance().toJson(data));
 
-        String uriPath = "/shenyu/register/uri/grpc/context/host:80";
+        String uriPath = "/shenyu/register/uri/Grpc/context/host:80";
         assert zookeeperBroker.containsKey(uriPath);
         assert zookeeperBroker.get(uriPath).equals(GsonUtils.getInstance().toJson(URIRegisterDTO.transForm(data)));
 

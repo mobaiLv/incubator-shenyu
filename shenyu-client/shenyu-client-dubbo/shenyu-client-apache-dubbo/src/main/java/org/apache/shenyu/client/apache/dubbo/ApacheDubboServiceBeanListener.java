@@ -24,6 +24,7 @@ import org.apache.dubbo.config.spring.ServiceBean;
 import org.apache.shenyu.client.core.disruptor.ShenyuClientRegisterEventPublisher;
 import org.apache.shenyu.client.dubbo.common.annotation.ShenyuDubboClient;
 import org.apache.shenyu.client.dubbo.common.dto.DubboRpcExt;
+import org.apache.shenyu.common.enums.RpcTypeEnum;
 import org.apache.shenyu.common.utils.GsonUtils;
 import org.apache.shenyu.common.utils.IpUtils;
 import org.apache.shenyu.register.client.api.ShenyuClientRegisterRepository;
@@ -122,7 +123,7 @@ public class ApacheDubboServiceBeanListener implements ApplicationListener<Conte
                 .pathDesc(desc)
                 .parameterTypes(parameterTypes)
                 .rpcExt(buildRpcExt(serviceBean))
-                .rpcType("dubbo")
+                .rpcType(RpcTypeEnum.DUBBO.getName())
                 .enabled(shenyuDubboClient.enabled())
                 .build();
     }

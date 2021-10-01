@@ -88,6 +88,9 @@ public class LocalPluginController {
     public Mono<String> cleanPlugin(@RequestParam("name") final String name) {
         BaseDataCache.getInstance().removePluginDataByPluginName(name);
         List<SelectorData> selectorData = BaseDataCache.getInstance().obtainSelectorData(name);
+        if (Objects.isNull(selectorData)) {
+            return Mono.just(Constants.SUCCESS);
+        }
         List<String> selectorIds = selectorData.stream().map(SelectorData::getId).collect(Collectors.toList());
         BaseDataCache.getInstance().removeSelectDataByPluginName(name);
         for (String selectorId : selectorIds) {

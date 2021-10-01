@@ -135,7 +135,7 @@ public class ParameterDataFactoryTest {
         exchange.getAttributes().put(Constants.CONTEXT, context);
 
         Assert.assertEquals(ParameterDataFactory.builderData("post", "httpMethod", exchange), "post");
-        Assert.assertEquals(ParameterDataFactory.builderData("post", "rpcType", exchange), "http");
+        Assert.assertEquals(ParameterDataFactory.builderData("post", "rpcType", exchange), RpcTypeEnum.HTTP.getName());
     }
 
     @Test

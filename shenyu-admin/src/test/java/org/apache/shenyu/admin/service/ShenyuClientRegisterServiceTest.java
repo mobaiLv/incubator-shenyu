@@ -433,7 +433,7 @@ public final class ShenyuClientRegisterServiceTest {
         springMvcRegisterDTO.setPath("path1");
         springMvcRegisterDTO.setPathDesc("pathDesc1");
         if (Objects.isNull(rpcTypeEnum)) {
-            springMvcRegisterDTO.setRpcType("http");
+            springMvcRegisterDTO.setRpcType(RpcTypeEnum.HTTP.getName());
         } else {
             springMvcRegisterDTO.setRpcType(rpcTypeEnum.getName());
         }

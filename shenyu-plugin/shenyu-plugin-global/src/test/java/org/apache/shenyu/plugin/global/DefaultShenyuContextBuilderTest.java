@@ -43,7 +43,7 @@ public final class DefaultShenyuContextBuilderTest {
     @Before
     public void setUp() {
         Map<String, ShenyuContextDecorator> decoratorMap = new HashMap<>();
-        decoratorMap.put("http", new FixtureHttpShenyuContextDecorator());
+        decoratorMap.put("Http", new FixtureHttpShenyuContextDecorator());
         defaultShenyuContextBuilder = new DefaultShenyuContextBuilder(decoratorMap);
     }
 

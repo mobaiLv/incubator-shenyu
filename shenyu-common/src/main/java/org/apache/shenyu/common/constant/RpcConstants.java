@@ -15,60 +15,56 @@
  * limitations under the License.
  */
 
-package org.apache.shenyu.register.common.enums;
+package org.apache.shenyu.common.constant;
 
 /**
- * RegisterTypeEnum.
+ * RpcConstants.
  */
-public enum RegisterTypeEnum {
+public interface RpcConstants {
 
     /**
-     * Http rpc type enum.
+     * Http rpc type constant.
      */
-    HTTP("Http"),
+    String HTTP = "Http";
 
     /**
-     * Dubbo rpc type enum.
+     * Dubbo rpc type constant.
      */
-    DUBBO("Dubbo"),
+    String DUBBO = "Dubbo";
 
     /**
-     * Sofa rpc type enum.
+     * Sofa rpc type constant.
      */
-    SOFA("Sofa"),
+    String SOFA = "Sofa";
 
     /**
-     * Tars rpc type enum.
+     * Tars rpc type constant.
      */
-    TARS("Tars"),
+    String TARS = "Tars";
 
     /**
-     * Motan rpc type enum.
+     * Web socket rpc type constant.
      */
-    MOTAN("Motan"),
+    String WEB_SOCKET = "Websocket";
 
     /**
-     * springCloud rpc type enum.
+     * springCloud rpc type constant.
      */
-    SPRING_CLOUD("SpringCloud"),
+    String SPRING_CLOUD = "SpringCloud";
+
+    /**
+     * motan.
+     */
+    String MOTAN = "Motan";
 
     /**
      * grpc.
      */
-    GRPC("Grpc");
-    
-    private final String name;
-
-    RegisterTypeEnum(final String name) {
-        this.name = name;
-    }
+    String GRPC = "Grpc";
 
     /**
-     * getName.
-     *
-     * @return String
+     * String q.
      */
-    public String getName() {
-        return name;
+    default void findConstants() {
     }
 }

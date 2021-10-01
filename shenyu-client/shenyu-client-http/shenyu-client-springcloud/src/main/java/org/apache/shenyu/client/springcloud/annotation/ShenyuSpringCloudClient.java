@@ -17,6 +17,8 @@
 
 package org.apache.shenyu.client.springcloud.annotation;
 
+import org.apache.shenyu.common.constant.RpcConstants;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -55,7 +57,7 @@ public @interface ShenyuSpringCloudClient {
      *
      * @return the string
      */
-    String rpcType() default "springCloud";
+    String rpcType() default RpcConstants.SPRING_CLOUD;
     
     /**
      * Enabled boolean.

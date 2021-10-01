@@ -17,6 +17,7 @@
 
 package org.apache.shenyu.register.client.etcd;
 
+import org.apache.shenyu.common.enums.RpcTypeEnum;
 import org.apache.shenyu.common.utils.GsonUtils;
 import org.apache.shenyu.register.common.dto.MetaDataRegisterDTO;
 import org.junit.Before;
@@ -73,7 +74,7 @@ public class EtcdClientRegisterRepositoryTest {
     @Test
     public void testPersistInterface() {
         final MetaDataRegisterDTO data = MetaDataRegisterDTO.builder()
-                .rpcType("http")
+                .rpcType(RpcTypeEnum.HTTP.getName())
                 .host("host")
                 .port(80)
                 .contextPath("/context")
@@ -81,11 +82,11 @@ public class EtcdClientRegisterRepositoryTest {
                 .build();
 
         repository.persistInterface(data);
-        String metadataPath = "/shenyu/register/metadata/http/context/context-ruleName";
+        String metadataPath = "/shenyu/register/metadata/Http/context/context-ruleName";
         assert etcdBroker.containsKey(metadataPath);
         assert etcdBroker.get(metadataPath).equals(GsonUtils.getInstance().toJson(data));
 
-        String uriPath = "/shenyu/register/uri/http/context/host:80";
+        String uriPath = "/shenyu/register/uri/Http/context/host:80";
         assert etcdBroker.containsKey(uriPath);
         assert etcdBroker.get(uriPath).equals(GsonUtils.getInstance().toJson(data));
 
@@ -97,7 +98,7 @@ public class EtcdClientRegisterRepositoryTest {
     @Test
     public void testPersistInterface4Other() {
         final MetaDataRegisterDTO data = MetaDataRegisterDTO.builder()
-                .rpcType("grpc")
+                .rpcType(RpcTypeEnum.GRPC.getName())
                 .host("host")
                 .port(80)
                 .contextPath("/context")
@@ -107,11 +108,11 @@ public class EtcdClientRegisterRepositoryTest {
                 .build();
 
         repository.persistInterface(data);
-        String metadataPath = "/shenyu/register/metadata/grpc/context/testService.testMethod";
+        String metadataPath = "/shenyu/register/metadata/Grpc/context/testService.testMethod";
         assert etcdBroker.containsKey(metadataPath);
         assert etcdBroker.get(metadataPath).equals(GsonUtils.getInstance().toJson(data));
 
-        String uriPath = "/shenyu/register/uri/grpc/context/host:80";
+        String uriPath = "/shenyu/register/uri/Grpc/context/host:80";
         assert etcdBroker.containsKey(uriPath);
         assert etcdBroker.get(uriPath).equals(GsonUtils.getInstance().toJson(data));
 

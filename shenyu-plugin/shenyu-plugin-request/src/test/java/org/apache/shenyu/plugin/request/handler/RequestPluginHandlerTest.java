@@ -18,6 +18,7 @@
 package org.apache.shenyu.plugin.request.handler;
 
 import org.apache.shenyu.common.dto.RuleData;
+import org.apache.shenyu.common.enums.PluginEnum;
 import org.apache.shenyu.plugin.base.utils.CacheKeyUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,6 +74,6 @@ public class RequestPluginHandlerTest {
 
     @Test
     public void testPluginNamed() {
-        assertEquals(this.requestPluginHandler.pluginNamed(), "request");
+        assertEquals(this.requestPluginHandler.pluginNamed(), PluginEnum.REQUEST.getName());
     }
 }

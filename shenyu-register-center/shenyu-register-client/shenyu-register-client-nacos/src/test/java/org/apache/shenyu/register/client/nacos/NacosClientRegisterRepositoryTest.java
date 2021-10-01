@@ -21,6 +21,7 @@ import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import org.apache.shenyu.common.enums.RpcTypeEnum;
 import org.apache.shenyu.common.utils.GsonUtils;
 import org.apache.shenyu.register.common.dto.MetaDataRegisterDTO;
 import org.apache.shenyu.register.common.dto.URIRegisterDTO;
@@ -108,7 +109,7 @@ public class NacosClientRegisterRepositoryTest {
     @Test
     public void testPersistInterface() {
         final MetaDataRegisterDTO data = MetaDataRegisterDTO.builder()
-                .rpcType("http")
+                .rpcType(RpcTypeEnum.HTTP.getName())
                 .host("host")
                 .port(80)
                 .contextPath("/context")
@@ -116,7 +117,7 @@ public class NacosClientRegisterRepositoryTest {
                 .build();
 
         repository.persistInterface(data);
-        String uriInstancePath = "shenyu.register.service.http";
+        String uriInstancePath = "shenyu.register.service.Http";
         assert nacosBroker.containsKey(uriInstancePath);
         Instance instance = (Instance) nacosBroker.get(uriInstancePath);
         assert instance.getPort() == data.getPort();
@@ -124,7 +125,7 @@ public class NacosClientRegisterRepositoryTest {
         Map<String, String> metadataMap = instance.getMetadata();
         assert metadataMap.get("uriMetadata").equals(GsonUtils.getInstance().toJson(URIRegisterDTO.transForm(data)));
 
-        String configPath = "shenyu.register.service.http.context";
+        String configPath = "shenyu.register.service.Http.context";
         assert nacosBroker.containsKey(configPath);
         String dataStr = GsonUtils.getInstance().toJson(data);
         assert nacosBroker.get(configPath).equals(GsonUtils.getInstance().toJson(Collections.singletonList(dataStr)));

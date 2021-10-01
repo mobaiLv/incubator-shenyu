@@ -39,13 +39,13 @@ import java.util.Map;
 @Join
 public class HttpClientRegisterRepository implements ShenyuClientRegisterRepository {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RegisterUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientRegisterRepository.class);
 
     private List<String> serverList;
 
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
 
-    private Map<String, String> turn = new HashMap<>();
+    private final Map<String, String> turn = new HashMap<>();
 
     @Override
     public void init(final ShenyuRegisterCenterConfig config) {

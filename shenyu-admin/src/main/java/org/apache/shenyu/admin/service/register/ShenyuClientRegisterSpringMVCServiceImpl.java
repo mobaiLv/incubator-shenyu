@@ -29,6 +29,7 @@ import org.apache.shenyu.admin.service.SelectorService;
 import org.apache.shenyu.admin.transfer.MetaDataTransfer;
 import org.apache.shenyu.admin.utils.ShenyuResultMessage;
 import org.apache.shenyu.common.constant.Constants;
+import org.apache.shenyu.common.constant.RpcConstants;
 import org.apache.shenyu.common.enums.ConfigGroupEnum;
 import org.apache.shenyu.common.enums.DataEventTypeEnum;
 import org.apache.shenyu.common.enums.PluginEnum;
@@ -45,7 +46,7 @@ import java.util.Objects;
 /**
  * spring mvc service register.
  */
-@Service("http")
+@Service(RpcConstants.HTTP)
 public class ShenyuClientRegisterSpringMVCServiceImpl extends AbstractShenyuClientRegisterServiceImpl {
 
     private final ApplicationEventPublisher eventPublisher;

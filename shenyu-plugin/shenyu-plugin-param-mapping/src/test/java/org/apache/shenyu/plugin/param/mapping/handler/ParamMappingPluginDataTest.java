@@ -18,6 +18,7 @@
 package org.apache.shenyu.plugin.param.mapping.handler;
 
 import org.apache.shenyu.common.dto.RuleData;
+import org.apache.shenyu.common.enums.PluginEnum;
 import org.apache.shenyu.plugin.base.utils.CacheKeyUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,6 +70,6 @@ public class ParamMappingPluginDataTest {
 
     @Test
     public void testPluginNamed() {
-        assertEquals(this.paramMappingPluginDataHandler.pluginNamed(), "param_mapping");
+        assertEquals(this.paramMappingPluginDataHandler.pluginNamed(), PluginEnum.PARAM_MAPPING.getName());
     }
 }

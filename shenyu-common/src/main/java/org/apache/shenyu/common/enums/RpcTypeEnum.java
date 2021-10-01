@@ -17,6 +17,7 @@
 
 package org.apache.shenyu.common.enums;
 
+import org.apache.shenyu.common.constant.RpcConstants;
 import org.apache.shenyu.common.exception.ShenyuException;
 
 import java.util.Arrays;
@@ -31,43 +32,42 @@ public enum RpcTypeEnum {
     /**
      * Http rpc type enum.
      */
-    HTTP("http", true),
+    HTTP(RpcConstants.HTTP, true),
 
     /**
      * Dubbo rpc type enum.
      */
-    DUBBO("dubbo", true),
+    DUBBO(RpcConstants.DUBBO, true),
 
     /**
      * Sofa rpc type enum.
      */
-    SOFA("sofa", true),
+    SOFA(RpcConstants.SOFA, true),
 
     /**
      * Tars rpc type enum.
      */
-    TARS("tars", true),
+    TARS(RpcConstants.TARS, true),
 
     /**
      * Web socket rpc type enum.
      */
-    WEB_SOCKET("websocket", true),
+    WEB_SOCKET(RpcConstants.WEB_SOCKET, true),
 
     /**
      * springCloud rpc type enum.
      */
-    SPRING_CLOUD("springCloud", true),
+    SPRING_CLOUD(RpcConstants.SPRING_CLOUD, true),
 
     /**
      * motan.
      */
-    MOTAN("motan", true),
+    MOTAN(RpcConstants.MOTAN, true),
 
     /**
      * grpc.
      */
-    GRPC("grpc", true);
-
+    GRPC(RpcConstants.GRPC, true);
 
     private final String name;
 

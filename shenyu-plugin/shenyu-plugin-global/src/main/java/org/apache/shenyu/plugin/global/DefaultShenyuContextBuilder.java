@@ -56,7 +56,7 @@ public class DefaultShenyuContextBuilder implements ShenyuContextBuilder {
         String path = request.getURI().getPath();
         MetaData metaData = MetaDataCache.getInstance().obtain(path);
         HttpHeaders headers = request.getHeaders();
-        String upgrade = headers.getFirst("Upgrade");
+        String upgrade = headers.getFirst(Constants.UPGRADE);
         String rpcType;
         if (Objects.nonNull(metaData) && metaData.getEnabled()) {
             exchange.getAttributes().put(Constants.META_DATA, metaData);
@@ -64,7 +64,7 @@ public class DefaultShenyuContextBuilder implements ShenyuContextBuilder {
         } else if (StringUtils.isNotEmpty(upgrade) && RpcTypeEnum.WEB_SOCKET.getName().equals(upgrade)) {
             rpcType = RpcTypeEnum.WEB_SOCKET.getName();
         } else {
-            String rpcTypeParam = request.getHeaders().getFirst("rpc_type");
+            String rpcTypeParam = request.getHeaders().getFirst(Constants.RPC_TYPE_HEADER);
             rpcType = StringUtils.isEmpty(rpcTypeParam) ? RpcTypeEnum.HTTP.getName() : rpcTypeParam;
         }
         return decoratorMap.get(rpcType).decorator(buildDefaultContext(request), metaData);

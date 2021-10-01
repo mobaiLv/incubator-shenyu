@@ -134,9 +134,6 @@ public final class ApplicationConfigCache {
      * @return the reference config
      */
     public ConsumerConfig<GenericService> build(final MetaData metaData) {
-        if (Objects.isNull(applicationConfig) || Objects.isNull(registryConfig)) {
-            return new ConsumerConfig<>();
-        }
         ConsumerConfig<GenericService> reference = new ConsumerConfig<>();
         reference.setGeneric(true);
         reference.setApplication(applicationConfig);

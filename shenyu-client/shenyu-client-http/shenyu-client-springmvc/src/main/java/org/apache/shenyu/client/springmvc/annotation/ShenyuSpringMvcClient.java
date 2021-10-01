@@ -17,6 +17,8 @@
 
 package org.apache.shenyu.client.springmvc.annotation;
 
+import org.apache.shenyu.common.constant.RpcConstants;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -55,7 +57,7 @@ public @interface ShenyuSpringMvcClient {
      *
      * @return the string
      */
-    String rpcType() default "http";
+    String rpcType() default RpcConstants.HTTP;
     
     /**
      * Enabled boolean.

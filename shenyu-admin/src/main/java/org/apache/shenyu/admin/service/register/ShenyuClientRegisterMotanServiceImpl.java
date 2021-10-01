@@ -22,6 +22,7 @@ import org.apache.shenyu.admin.service.MetaDataService;
 import org.apache.shenyu.admin.service.RuleService;
 import org.apache.shenyu.admin.service.SelectorService;
 import org.apache.shenyu.admin.utils.ShenyuResultMessage;
+import org.apache.shenyu.common.constant.RpcConstants;
 import org.apache.shenyu.common.enums.PluginEnum;
 import org.apache.shenyu.register.common.dto.MetaDataRegisterDTO;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ import java.util.Objects;
 /**
  * motan service register.
  */
-@Service("motan")
+@Service(RpcConstants.MOTAN)
 public class ShenyuClientRegisterMotanServiceImpl extends AbstractShenyuClientRegisterServiceImpl {
 
     private final MetaDataService metaDataService;

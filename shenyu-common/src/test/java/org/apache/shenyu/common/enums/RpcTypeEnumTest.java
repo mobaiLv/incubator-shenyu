@@ -30,14 +30,14 @@ import static org.junit.Assert.assertTrue;
 public class RpcTypeEnumTest {
     @Test
     public void testGetName() {
-        assertEquals("grpc", RpcTypeEnum.GRPC.getName());
-        assertEquals("dubbo", RpcTypeEnum.DUBBO.getName());
-        assertEquals("http", RpcTypeEnum.HTTP.getName());
-        assertEquals("motan", RpcTypeEnum.MOTAN.getName());
-        assertEquals("sofa", RpcTypeEnum.SOFA.getName());
-        assertEquals("springCloud", RpcTypeEnum.SPRING_CLOUD.getName());
-        assertEquals("tars", RpcTypeEnum.TARS.getName());
-        assertEquals("websocket", RpcTypeEnum.WEB_SOCKET.getName());
+        assertEquals("Grpc", RpcTypeEnum.GRPC.getName());
+        assertEquals("Dubbo", RpcTypeEnum.DUBBO.getName());
+        assertEquals("Http", RpcTypeEnum.HTTP.getName());
+        assertEquals("Motan", RpcTypeEnum.MOTAN.getName());
+        assertEquals("Sofa", RpcTypeEnum.SOFA.getName());
+        assertEquals("SpringCloud", RpcTypeEnum.SPRING_CLOUD.getName());
+        assertEquals("Tars", RpcTypeEnum.TARS.getName());
+        assertEquals("Websocket", RpcTypeEnum.WEB_SOCKET.getName());
     }
 
     @Test

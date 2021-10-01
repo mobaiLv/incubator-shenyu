@@ -32,6 +32,7 @@ import org.apache.shenyu.admin.transfer.MetaDataTransfer;
 import org.apache.shenyu.admin.utils.DivideUpstreamUtils;
 import org.apache.shenyu.admin.utils.ShenyuResultMessage;
 import org.apache.shenyu.common.constant.Constants;
+import org.apache.shenyu.common.constant.RpcConstants;
 import org.apache.shenyu.common.dto.SelectorData;
 import org.apache.shenyu.common.dto.convert.selector.DivideUpstream;
 import org.apache.shenyu.common.dto.convert.selector.SpringCloudSelectorHandle;
@@ -54,7 +55,7 @@ import java.util.Objects;
 /**
  * spring cloud service register.
  */
-@Service("springCloud")
+@Service(RpcConstants.SPRING_CLOUD)
 public class ShenyuClientRegisterSpringCloudServiceImpl extends AbstractShenyuClientRegisterServiceImpl {
 
     private final ApplicationEventPublisher eventPublisher;

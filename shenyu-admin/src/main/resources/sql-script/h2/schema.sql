@@ -369,7 +369,7 @@ INSERT IGNORE INTO plugin_handle (`id`,`plugin_id`,`field`,`label`,`data_type`,`
 INSERT IGNORE INTO plugin_handle (`id`,`plugin_id`,`field`,`label`,`data_type`,`type`,`sort`,`date_created`,`date_updated`) VALUES ('131', '3', 'replace', 'replace', 2, 2, 2, '2021-05-24 16:07:10', '2021-05-24 16:07:10');
 
 /*insert plugin_handle data for Redirect*/
-INSERT IGNORE INTO plugin_handle (`id`,`plugin_id`,`field`,`label`,`data_type`,`type`,`sort`,`date_created`,`date_updated`) VALUES ('42', '16' ,'RedirectURI','RedirectURI', 2, 2, 1, '2020-11-29 16:07:10', '2020-11-29 16:07:10');
+INSERT IGNORE INTO plugin_handle (`id`,`plugin_id`,`field`,`label`,`data_type`,`type`,`sort`,`date_created`,`date_updated`) VALUES ('42', '16' ,'redirectURI','redirectURI', 2, 2, 1, '2020-11-29 16:07:10', '2020-11-29 16:07:10');
 
 /*insert plugin_handle data for SpringCloud*/
 INSERT IGNORE INTO plugin_handle (`id`,`plugin_id`,`field`,`label`,`data_type`,`type`,`sort`,`date_created`,`date_updated`) VALUES ('14', '8' ,'path','path', 2, 2, 1, '2020-11-29 16:07:10', '2020-11-29 16:07:10');
@@ -422,7 +422,7 @@ INSERT IGNORE INTO plugin_handle (`id`,`plugin_id`,`field`,`label`,`data_type`,`
 INSERT IGNORE INTO plugin_handle (`id`,`plugin_id`,`field`,`label`,`data_type`,`type`,`sort`,`ext_obj`,`date_created`,`date_updated`) VALUES ('54', '5', 'multiSelectorHandle', 'multiSelectorHandle', 3, 3, 0, null, '2021-03-08 13:18:44', '2021-03-09 10:32:51');
 INSERT IGNORE INTO plugin_handle (`id`,`plugin_id`,`field`,`label`,`data_type`,`type`,`sort`,`ext_obj`,`date_created`,`date_updated`) VALUES ('55', '5', 'multiRuleHandle', 'multiRuleHandle', 3, 3, 1, null, '2021-03-08 13:37:12', '2021-03-09 10:32:51');
 INSERT IGNORE INTO plugin_handle (`id`,`plugin_id`,`field`,`label`,`data_type`,`type`,`sort`,`ext_obj`,`date_created`,`date_updated`) VALUES ('80', '5', 'headerMaxSize', 'headerMaxSize', 1, 2, 3, '{"defaultValue":"10240","rule":""}', '2021-04-29 12:28:45', '2021-04-29 12:28:52');
-INSERT IGNORE INTO plugin_handle (`id`,`plugin_id`,`field`,`label`,`data_type`,`type`,`sort`,`ext_obj`,`date_created`,`date_updated`) VALUES ('81', '5', 'RequestMaxSize', 'RequestMaxSize', 1, 2, 4, '{"defaultValue":"102400","rule":""}', '2021-04-29 14:24:13', '2021-04-29 14:24:16');
+INSERT IGNORE INTO plugin_handle (`id`,`plugin_id`,`field`,`label`,`data_type`,`type`,`sort`,`ext_obj`,`date_created`,`date_updated`) VALUES ('81', '5', 'requestMaxSize', 'requestMaxSize', 1, 2, 4, '{"defaultValue":"102400","rule":""}', '2021-04-29 14:24:13', '2021-04-29 14:24:16');
 
 /*insert plugin_handle data for Tars*/
 INSERT IGNORE INTO plugin_handle (`id`,`plugin_id`,`field`,`label`,`data_type`,`type`,`sort`,`ext_obj`,`date_created`,`date_updated`) VALUES ('56', '13', 'upstreamHost', 'host', 2, 1, 0, null, '2021-03-06 21:23:41', '2021-03-09 10:32:51');

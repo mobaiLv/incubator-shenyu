@@ -43,22 +43,22 @@ public interface RpcConstants {
     String TARS = "Tars";
 
     /**
-     * Web socket rpc type constant.
+     * Websocket rpc type constant.
      */
     String WEB_SOCKET = "Websocket";
 
     /**
-     * springCloud rpc type constant.
+     * SpringCloud rpc type constant.
      */
     String SPRING_CLOUD = "SpringCloud";
 
     /**
-     * motan.
+     * Motan.
      */
     String MOTAN = "Motan";
 
     /**
-     * grpc.
+     * Grpc.
      */
     String GRPC = "Grpc";
 

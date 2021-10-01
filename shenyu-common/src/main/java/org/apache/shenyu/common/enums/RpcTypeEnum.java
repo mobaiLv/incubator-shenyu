@@ -50,22 +50,22 @@ public enum RpcTypeEnum {
     TARS(RpcConstants.TARS, true),
 
     /**
-     * Web socket rpc type enum.
+     * Websocket rpc type enum.
      */
     WEB_SOCKET(RpcConstants.WEB_SOCKET, true),
 
     /**
-     * springCloud rpc type enum.
+     * SpringCloud rpc type enum.
      */
     SPRING_CLOUD(RpcConstants.SPRING_CLOUD, true),
 
     /**
-     * motan.
+     * Motan.
      */
     MOTAN(RpcConstants.MOTAN, true),
 
     /**
-     * grpc.
+     * Grpc.
      */
     GRPC(RpcConstants.GRPC, true);
 
